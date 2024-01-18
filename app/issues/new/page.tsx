@@ -1,12 +1,15 @@
 "use client";
 import { createIssueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/components/ErrorMessage";
+import Spinner from "@/components/Spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
   Callout,
-  Heading, TextField
+  Flex,
+  Heading,
+  TextField,
 } from "@radix-ui/themes";
 import axios, { AxiosError } from "axios";
 import "easymde/dist/easymde.min.css";
@@ -24,18 +27,18 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
+  const router = useRouter();
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError: setFormError,
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
     mode: "onTouched",
   });
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const onSubmit = async (data: IssueForm) => {
     try {
@@ -87,11 +90,16 @@ const NewIssuePage = () => {
             />
           )}
         />
-        <Box style={{ marginTop: "-24px" }}>
-          <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        </Box>
+        {errors.description && (
+          <Box style={{ marginTop: "-24px" }}>
+            <ErrorMessage>{errors.description.message}</ErrorMessage>
+          </Box>
+        )}
 
-        <Button>Submit</Button>
+        <Button disabled={isSubmitting}>
+          Submit
+          {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
