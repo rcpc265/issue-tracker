@@ -1,7 +1,13 @@
 "use client";
 import { createIssueSchema } from "@/app/validationSchemas";
+import ErrorMessage from "@/components/ErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Callout, Heading, Text, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Callout,
+  Heading, TextField
+} from "@radix-ui/themes";
 import axios, { AxiosError } from "axios";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
@@ -26,6 +32,7 @@ const NewIssuePage = () => {
     setError: setFormError,
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
+    mode: "onTouched",
   });
   const [error, setError] = useState("");
   const router = useRouter();
@@ -63,11 +70,8 @@ const NewIssuePage = () => {
         <TextField.Root>
           <TextField.Input {...register("title")} placeholder="Title" />
         </TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
         <Controller
           name="description"
           control={control}
@@ -83,11 +87,10 @@ const NewIssuePage = () => {
             />
           )}
         />
-        {errors.description && (
-          <Text color="red" as="p" style={{ marginTop: "-24px" }}>
-            {errors.description.message}
-          </Text>
-        )}
+        <Box style={{ marginTop: "-24px" }}>
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        </Box>
+
         <Button>Submit</Button>
       </form>
     </div>
