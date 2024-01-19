@@ -1,12 +1,14 @@
 import { Table } from "@radix-ui/themes";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import IssueActions from "./IssueActions";
 
 const LoadingIssuePage = () => {
   const issues = Array.from({ length: 8 }, (_, i) => i + 1);
 
   return (
     <>
+      <IssueActions />
       <Table.Root variant="surface" mt="5">
         <Table.Header>
           <Table.Row>
