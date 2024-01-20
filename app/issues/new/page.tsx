@@ -1,16 +1,8 @@
 "use client";
 import { createIssueSchema } from "@/app/validationSchemas";
-import ErrorMessage from "@/components/ErrorMessage";
-import Spinner from "@/components/Spinner";
+import { ErrorMessage, Spinner } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Box,
-  Button,
-  Callout,
-  Flex,
-  Heading,
-  TextField,
-} from "@radix-ui/themes";
+import { Box, Button, Callout, Heading, TextField } from "@radix-ui/themes";
 import axios, { AxiosError } from "axios";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
@@ -19,8 +11,10 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { z } from "zod";
+import { MDESkeleton } from "./loading";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  loading: () => <MDESkeleton />,
   ssr: false,
 });
 

@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import prisma from "@/prisma/client";
 import { Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
 
 interface Props {
   params: { id: string };
@@ -15,7 +16,7 @@ const IssueDetailPage = async ({ params: { id } }: Props) => {
 
   return (
     <>
-      <Flex gap="3">
+      <Flex gap="3" align="center">
         <Heading>{issue.title}</Heading>
         <IssueStatusBadge status={issue.status} />
       </Flex>
