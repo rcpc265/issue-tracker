@@ -1,11 +1,6 @@
 import { Skeleton } from "@/components";
-import { Box, Button, Card, Flex, Heading } from "@radix-ui/themes";
-
-export const MDESkeleton = () => (
-  <Card style={{ height: "370px", marginBottom: "35px" }}>
-    <Skeleton count={14} />
-  </Card>
-);
+import { Box, Button, Flex, Heading } from "@radix-ui/themes";
+import MDESkeleton from "../_components/MDESkeleton";
 
 const LoadingNewIssuePage = () => {
   return (
