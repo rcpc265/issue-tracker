@@ -61,7 +61,7 @@ const IssueForm = ({ issue: previousIssue }: { issue?: Issue }) => {
     try {
       if (previousIssue) {
         await axios.put(`/api/issues/${previousIssue.id}`, data);
-        router.push(`/issues/${previousIssue.id}`);
+        router.push(`/issues`);
         return router.refresh();
       }
 
