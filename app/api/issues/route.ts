@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { createIssueSchema } from "@/app/validationSchemas";
+import { issueSchema } from "@/app/validationSchemas";
 
 const createIssue = async (request: NextRequest) => {
   const body: unknown = await request.json();
-  const parsed = createIssueSchema.safeParse(body);
+  const parsed = issueSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(parsed.error.format(), { status: 400 });
@@ -17,9 +17,7 @@ const createIssue = async (request: NextRequest) => {
   if (existingIssue) {
     return NextResponse.json(
       { error: "An issue with this title already exists." },
-      {
-        status: 409,
-      }
+      { status: 409 }
     );
   }
 
