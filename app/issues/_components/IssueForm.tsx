@@ -13,19 +13,14 @@ import {
 } from "@radix-ui/themes";
 import axios, { AxiosError } from "axios";
 import "easymde/dist/easymde.min.css";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { z } from "zod";
-import MDESkeleton from "./MDESkeleton";
 import { Issue, Status } from "@prisma/client";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  loading: () => <MDESkeleton />,
-  ssr: false,
-});
+import SimpleMDE from "react-simplemde-editor";
+import Link from "next/link";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
@@ -143,10 +138,15 @@ const IssueForm = ({ issue: previousIssue }: { issue?: Issue }) => {
             <ErrorMessage>{errors.description.message}</ErrorMessage>
           </Box>
         )}
-        <Button type="submit" disabled={isSubmitting}>
-          Submit
-          {isSubmitting && <Spinner />}
-        </Button>
+        <Flex gap="2">
+          <Button type="submit" disabled={isSubmitting}>
+            Submit
+            {isSubmitting && <Spinner />}
+          </Button>
+          <Button type="button" color="red">
+            <Link href="/issues">Cancel</Link>
+          </Button>
+        </Flex>
       </form>
     </div>
   );

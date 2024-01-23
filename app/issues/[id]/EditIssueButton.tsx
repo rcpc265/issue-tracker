@@ -1,13 +1,20 @@
-import { Button } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
-const EditIssueButton = ({ id }: { id: number }) => {
+interface Props {
+  id: number;
+  showText?: boolean;
+}
+
+const EditIssueButton = ({ id, showText = true }: Props) => {
   return (
     <Button>
-      <HiOutlinePencilAlt className="stroke-[2px] text-[14px]" />
-      <Link href={`/issues/${id}/edit`} className="font-medium">
-        Edit Issue
+      <Link href={`/issues/${id}/edit`}>
+        <Flex align="center" gap="2">
+          <HiOutlinePencilAlt className="stroke-[2px] text-[14px]" />
+          {showText && <span className="font-medium">Edit Issue</span>}
+        </Flex>
       </Link>
     </Button>
   );

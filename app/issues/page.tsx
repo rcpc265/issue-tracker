@@ -2,6 +2,8 @@ import { IssueStatusBadge, Link } from "@/components";
 import prisma from "@/prisma/client";
 import { Flex, Table } from "@radix-ui/themes";
 import IssueActions from "./IssueActions";
+import EditIssueButton from "./[id]/EditIssueButton";
+import DeleteIssueButton from "./[id]/DeleteIssueButton";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany({
@@ -21,6 +23,7 @@ const IssuesPage = async () => {
             <Table.ColumnHeaderCell className="hidden md:table-cell">
               Created
             </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -39,6 +42,12 @@ const IssuesPage = async () => {
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.createdAt.toDateString()}
+              </Table.Cell>
+              <Table.Cell>
+                <Flex gap="2">
+                  <EditIssueButton id={issue.id} showText={false} />
+                  <DeleteIssueButton id={issue.id} showText={false} />
+                </Flex>
               </Table.Cell>
             </Table.Row>
           ))}

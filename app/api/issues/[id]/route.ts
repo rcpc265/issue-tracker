@@ -51,4 +51,21 @@ const updateIssue = async (req: NextRequest, { params }: Params) => {
   return NextResponse.json(updatedIssue, { status: 200 });
 };
 
-export { updateIssue as PUT };
+const deleteIssue = async (_req: NextRequest, { params }: Params) => {
+  const currentIssue = await prisma.issue.findFirst({
+    where: { id: +params.id },
+  });
+
+  if (!currentIssue) {
+    return NextResponse.json(
+      { error: "No issue with this id exists." },
+      { status: 404 }
+    );
+  }
+
+  await prisma.issue.delete({ where: { id: +params.id } });
+
+  return NextResponse.json({ message: "Issue deleted." }, { status: 200 });
+};
+
+export { updateIssue as PUT, deleteIssue as DELETE };

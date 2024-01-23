@@ -1,8 +1,9 @@
 import IssueStatusBadge from "@/components/IssueStatusBadge";
+import { Issue } from "@prisma/client";
 import { Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import ReactMarkdown from "react-markdown";
+import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
-import { Issue } from "@prisma/client";
 
 interface Props {
   issue: Issue;
@@ -16,7 +17,10 @@ const IssueDetails = ({ issue }: Props) => {
           <Heading>{issue.title}</Heading>
           <IssueStatusBadge status={issue.status} />
         </Flex>
-        <EditIssueButton id={issue.id} />
+        <Flex gap="3">
+          <DeleteIssueButton id={issue.id} />
+          <EditIssueButton id={issue.id} />
+        </Flex>
       </Flex>
       <Card className="prose" mt="5">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
