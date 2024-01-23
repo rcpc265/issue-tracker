@@ -2,8 +2,8 @@ import { IssueStatusBadge, Link } from "@/components";
 import prisma from "@/prisma/client";
 import { Button, Flex, Table, Text } from "@radix-ui/themes";
 import IssueActions from "./IssueActions";
-import DeleteIssueButton from "./[id]/DeleteIssueButton";
-import EditIssueButton from "./[id]/EditIssueButton";
+import DeleteIssueButton from "../[id]/DeleteIssueButton";
+import EditIssueButton from "../[id]/EditIssueButton";
 import { FiPlusCircle } from "react-icons/fi";
 
 const IssuesPage = async () => {

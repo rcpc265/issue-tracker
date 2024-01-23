@@ -10,7 +10,7 @@ interface Props {
 const EditIssueButton = ({ id, showText = true }: Props) => {
   return (
     <Button>
-      <Link href={`/issues/${id}/edit`}>
+      <Link href={`/issues/edit/${id}`}>
         <Flex align="center" gap="2">
           <HiOutlinePencilAlt className="stroke-[2px] text-[14px]" />
           {showText && <span className="font-medium">Edit Issue</span>}
