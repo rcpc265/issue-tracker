@@ -55,7 +55,12 @@ const DeleteIssueButton = ({ id, showText = true }: Props) => {
               </Button>
             </AlertDialog.Cancel>
             <AlertDialog.Action>
-              <Button variant="solid" color="red" onClick={deleteIssue}>
+              <Button
+                variant="solid"
+                color="red"
+                onClick={deleteIssue}
+                disabled={isLoading}
+              >
                 Delete Issue
               </Button>
             </AlertDialog.Action>
