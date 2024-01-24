@@ -1,6 +1,8 @@
 import { issueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import authOptions from "../../auth/[...nextauth]/authOptions";
 
 interface Params {
   params: {
@@ -9,6 +11,14 @@ interface Params {
 }
 
 const updateIssue = async (req: NextRequest, { params }: Params) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      { error: "You must be logged in to create an issue." },
+      { status: 401 }
+    );
+  }
+
   const body: unknown = await req.json();
   const parsed = issueSchema.safeParse(body);
 
@@ -52,6 +62,14 @@ const updateIssue = async (req: NextRequest, { params }: Params) => {
 };
 
 const deleteIssue = async (_req: NextRequest, { params }: Params) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      { error: "You must be logged in to create an issue." },
+      { status: 401 }
+    );
+  }
+
   const currentIssue = await prisma.issue.findFirst({
     where: { id: +params.id },
   });

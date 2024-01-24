@@ -1,12 +1,16 @@
+import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import { IssueStatusBadge, Link } from "@/components";
 import prisma from "@/prisma/client";
 import { Button, Flex, Table, Text } from "@radix-ui/themes";
-import IssueActions from "./IssueActions";
+import { getServerSession } from "next-auth";
+import { FiPlusCircle } from "react-icons/fi";
 import DeleteIssueButton from "../[id]/DeleteIssueButton";
 import EditIssueButton from "../[id]/EditIssueButton";
-import { FiPlusCircle } from "react-icons/fi";
+import IssueActions from "./IssueActions";
 
 const IssuesPage = async () => {
+  const session = await getServerSession(authOptions);
+
   const issues = await prisma.issue.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -43,7 +47,9 @@ const IssuesPage = async () => {
               <Table.ColumnHeaderCell className="hidden md:table-cell">
                 Created
               </Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
+              {session && (
+                <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
+              )}
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -63,12 +69,14 @@ const IssuesPage = async () => {
                 <Table.Cell className="hidden md:table-cell">
                   {issue.createdAt.toDateString()}
                 </Table.Cell>
-                <Table.Cell>
-                  <Flex gap="2">
-                    <EditIssueButton id={issue.id} showText={false} />
-                    <DeleteIssueButton id={issue.id} showText={false} />
-                  </Flex>
-                </Table.Cell>
+                {session && (
+                  <Table.Cell>
+                    <Flex gap="2">
+                      <EditIssueButton id={issue.id} showText={false} />
+                      <DeleteIssueButton id={issue.id} showText={false} />
+                    </Flex>
+                  </Table.Cell>
+                )}
               </Table.Row>
             ))}
           </Table.Body>
