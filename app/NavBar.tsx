@@ -1,10 +1,14 @@
 "use client";
-import Link from "next/link";
-import { AiFillBug } from "react-icons/ai";
-import { usePathname } from "next/navigation";
+import { Box, Container, Flex } from "@radix-ui/themes";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AiFillBug } from "react-icons/ai";
+import AuthLink from "./AuthLink";
 
 const NavBar = () => {
+  const { data: session, status } = useSession();
   const path = usePathname();
   const routes = [
     {
@@ -16,31 +20,38 @@ const NavBar = () => {
       path: "/issues",
     },
   ];
+
   return (
-    <nav>
-      <ul
-        className="flex space-x-6 border-b px-5 h-14 items-center
-      "
-      >
-        <li>
-          <Link href="/">
-            <AiFillBug className="text-lg" />
-          </Link>
-        </li>
-        {routes.map((route) => (
-          <li
-            key={route.path}
-            className={clsx(
-              "transition-all px-2 py-1 hover:underline underline-offset-4 rounded",
-              path === route.path
-                ? "text-white bg-zinc-950"
-                : "hover:text-white hover:bg-zinc-950"
-            )}
-          >
-            <Link href={route.path}>{route.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <nav className="border-b px-5 py-3 h-14">
+      <Container>
+        <Flex gap="6" justify="between" align="center">
+          <ul>
+            <Flex gap="6" align="center">
+              <li>
+                <Link href="/">
+                  <AiFillBug className="text-lg" />
+                </Link>
+              </li>
+              {routes.map((route) => (
+                <li
+                  key={route.path}
+                  className={clsx(
+                    "transition-all px-2 py-1 hover:underline underline-offset-4 rounded",
+                    path === route.path
+                      ? "text-white bg-zinc-950"
+                      : "hover:text-white hover:bg-zinc-950"
+                  )}
+                >
+                  <Link href={route.path}>{route.name}</Link>
+                </li>
+              ))}
+            </Flex>
+          </ul>
+          <Box>
+            <AuthLink />
+          </Box>
+        </Flex>
+      </Container>
     </nav>
   );
 };
