@@ -4,7 +4,7 @@ import { Avatar, DropdownMenu, Text } from "@radix-ui/themes";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
-const AuthLink = () => {
+const AuthButton = () => {
   const { data: session, status } = useSession();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const isLoading = status === "loading" || isSigningIn;
@@ -46,4 +46,4 @@ const AuthLink = () => {
   }
 };
 
-export default AuthLink;
+export default AuthButton;

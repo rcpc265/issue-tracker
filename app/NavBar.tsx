@@ -1,14 +1,12 @@
 "use client";
 import { Box, Container, Flex } from "@radix-ui/themes";
 import clsx from "clsx";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiFillBug } from "react-icons/ai";
-import AuthLink from "./AuthLink";
+import AuthButton from "./AuthButton";
 
 const NavBar = () => {
-  const { data: session, status } = useSession();
   const path = usePathname();
   const routes = [
     {
@@ -48,7 +46,7 @@ const NavBar = () => {
             </Flex>
           </ul>
           <Box>
-            <AuthLink />
+            <AuthButton />
           </Box>
         </Flex>
       </Container>
