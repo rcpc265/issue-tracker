@@ -10,9 +10,15 @@ export const issueSchema = z
     description: z
       .string()
       .min(1, { message: "Description is required." })
-      .max(1000, { message: "Description must be less than 1000 characters." }),
+      .max(65535, {
+        message: "Description must be less than 65535 characters.",
+      }),
     status: z.nativeEnum(Status, {
       invalid_type_error: "Invalid status passed.",
     }),
   })
   .strict();
+
+export const updateIssueSchema = issueSchema.partial().extend({
+  userId: z.string().cuid({ message: "Invalid user id passed." }).nullish(),
+});

@@ -1,4 +1,4 @@
-import { issueSchema } from "@/app/validationSchemas";
+import { updateIssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -20,12 +20,23 @@ const updateIssue = async (req: NextRequest, { params }: Params) => {
   }
 
   const body: unknown = await req.json();
-  const parsed = issueSchema.safeParse(body);
+  const parsed = updateIssueSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(parsed.error.format(), { status: 400 });
   }
 
+  if (parsed.data.userId) {
+    const user = await prisma.user.findUnique({
+      where: { id: parsed.data.userId },
+    });
+    if (!user) {
+      return NextResponse.json(
+        { error: "No user with this id exists." },
+        { status: 404 }
+      );
+    }
+  }
   const currentIssue = await prisma.issue.findFirst({
     where: { id: +params.id },
   });
