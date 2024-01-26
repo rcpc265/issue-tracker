@@ -3,10 +3,11 @@ import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavBar from "./NavBar";
+import QueryProvider from "./QueryProvider";
 import AuthProvider from "./auth/AuthProvider";
 import "./globals.css";
 import "./theme-config.css";
-import QueryProvider from "./QueryProvider";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,8 +31,8 @@ export default function RootLayout({
           <QueryProvider>
             <Theme accentColor="teal">
               <NavBar />
-              <main className="mt-8">
-                <Container>{children}</Container>
+              <main>
+                <Container className="p-8">{children}</Container>
               </main>
             </Theme>
           </QueryProvider>

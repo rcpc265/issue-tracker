@@ -40,7 +40,11 @@ const DeleteIssueButton = ({ id, showText = true }: Props) => {
             ) : (
               <FiTrash2 className="stroke-[2px] text-[14px]" />
             )}
-            {showText && <span className="font-medium">Delete Issue</span>}
+            {showText && (
+              <span className="font-medium whitespace-nowrap">
+                Delete Issue
+              </span>
+            )}
           </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content style={{ maxWidth: 450 }}>

@@ -9,7 +9,7 @@ interface Props {
 
 const EditIssueButton = async ({ id, showText = true }: Props) => (
   <Button>
-    <Link href={`/issues/edit/${id}`}>
+    <Link href={`/issues/${id}/edit`}>
       <Flex align="center" gap="2">
         <HiOutlinePencilAlt className="stroke-[2px] text-[14px]" />
         {showText && <span className="font-medium">Edit Issue</span>}

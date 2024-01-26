@@ -8,8 +8,7 @@ import {
   Callout,
   Flex,
   Heading,
-  Select,
-  TextField,
+  Select, TextField
 } from "@radix-ui/themes";
 import axios, { AxiosError } from "axios";
 import "easymde/dist/easymde.min.css";
@@ -21,15 +20,11 @@ import { z } from "zod";
 import { Issue, Status } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 import Link from "next/link";
+import AssigneeSelect from "../[id]/AssigneeSelect";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
 const STATUS_TYPES = Object.values(Status);
-const STATUS_COLORS_CLASS: Record<Status, string> = {
-  [Status.OPEN]: "text-red-500",
-  [Status.IN_PROGRESS]: "text-violet-500",
-  [Status.CLOSED]: "text-green-500",
-};
 
 const IssueForm = ({ issue: previousIssue }: { issue?: Issue }) => {
   const router = useRouter();
@@ -80,31 +75,9 @@ const IssueForm = ({ issue: previousIssue }: { issue?: Issue }) => {
   return (
     <div className="max-w-xl mx-auto">
       <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-        <Flex justify="between">
+        <Flex mb="4" justify="between" align="center">
           <Heading>{previousIssue ? "Edit Issue" : "New Issue"}</Heading>
-          {previousIssue && (
-            <Controller
-              name="status"
-              control={control}
-              defaultValue="OPEN"
-              render={({ field }) => (
-                <Select.Root onValueChange={field.onChange} value={field.value}>
-                  <Select.Trigger />
-                  <Select.Content>
-                    {STATUS_TYPES.map((status) => (
-                      <Select.Item
-                        key={status}
-                        value={status}
-                        className={`font-medium ${STATUS_COLORS_CLASS[status]}`}
-                      >
-                        {status.replace("_", " ")}
-                      </Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select.Root>
-              )}
-            />
-          )}
+          {previousIssue && <AssigneeSelect issue={previousIssue} />}
         </Flex>
         {submissionError && (
           <Callout.Root color="red" role="alert">
@@ -114,9 +87,30 @@ const IssueForm = ({ issue: previousIssue }: { issue?: Issue }) => {
             <Callout.Text>{submissionError}</Callout.Text>
           </Callout.Root>
         )}
-        <TextField.Root>
-          <TextField.Input {...register("title")} placeholder="Title" />
-        </TextField.Root>
+        <Flex gap="2">
+          <TextField.Root className="w-full">
+            <TextField.Input {...register("title")} placeholder="Title" />
+          </TextField.Root>
+          {previousIssue && (
+            <Controller
+              name="status"
+              control={control}
+              defaultValue="OPEN"
+              render={({ field }) => (
+                <Select.Root onValueChange={field.onChange} value={field.value}>
+                  <Select.Trigger />
+                  <Select.Content variant="soft">
+                    {STATUS_TYPES.map((status) => (
+                      <Select.Item key={status} value={status}>
+                        {status.replace("_", " ")}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Root>
+              )}
+            />
+          )}
+        </Flex>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
