@@ -48,20 +48,23 @@ const updateIssue = async (req: NextRequest, { params }: Params) => {
     );
   }
 
-  const existingIssue = await prisma.issue.findFirst({
-    where: {
-      title: parsed.data.title,
-      id: {
-        not: +params.id,
+  // Check if issue with this title already exists
+  if (parsed.data.title) {
+    const existingIssue = await prisma.issue.findFirst({
+      where: {
+        title: parsed.data.title,
+        NOT: {
+          id: +params.id,
+        },
       },
-    },
-  });
+    });
 
-  if (existingIssue) {
-    return NextResponse.json(
-      { error: "An issue with this title already exists." },
-      { status: 409 }
-    );
+    if (existingIssue) {
+      return NextResponse.json(
+        { error: "An issue with this title already exists." },
+        { status: 409 }
+      );
+    }
   }
 
   const updatedIssue = await prisma.issue.update({

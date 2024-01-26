@@ -2,7 +2,6 @@ import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/prisma/client";
 import { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { Ultra } from "next/font/google";
 
 const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -12,11 +11,9 @@ const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  callbacks: {
-    async redirect({ baseUrl }) {
-      return baseUrl;
-    },
-  },
+  session: {
+    strategy: "jwt",
+  }
 };
 
 export default authOptions;
