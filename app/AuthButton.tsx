@@ -1,8 +1,9 @@
 "use client";
 import { Spinner } from "@/components";
-import { Avatar, DropdownMenu, Text } from "@radix-ui/themes";
+import { Box, DropdownMenu, Text } from "@radix-ui/themes";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
+import UserAvatar from "./UserAvatar";
 
 const AuthButton = () => {
   const { data: session, status } = useSession();
@@ -23,13 +24,10 @@ const AuthButton = () => {
       return (
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
-            <Avatar
-              src={session.user!.image!}
-              fallback="?"
-              size="2"
-              radius="full"
-              className="cursor-pointer"
-            />
+            {/* Wrap in Box to prevent passing ref */}
+            <Box>
+              <UserAvatar src={session.user!.image!} />
+            </Box>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <DropdownMenu.Label>
